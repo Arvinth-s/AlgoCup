@@ -1,0 +1,2 @@
+# AlgoCup
+Code for algocup
