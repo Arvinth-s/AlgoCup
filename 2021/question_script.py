@@ -119,8 +119,9 @@ def add_case(values, edges_list):
     assert(res < int(1e9))
     sign = 2*np.random.randint(2)-1
     noise = np.random.randint(int(res/2))
-    qfile.write(str(noise))
-    if(sign > 0 or noise == 0):
+    qfile.write(str(noise*sign+res))
+    assert(sign==1 or sign==-1)
+    if(sign < 0 or noise == 0):
         afile.write('Heaven')
     else:
         afile.write('Hell')
@@ -166,14 +167,16 @@ except:
 
 
 '''case1: '''
-values = list(np.arange(1, 1+n_max))
+n=n_max
+values = list(np.arange(1, 1+n))
 edges = [list(np.arange(len(values)))]
 random.shuffle(edges[0])
 res = add_case(values, edges)
 
 
 '''case2: '''
-values = list(np.arange(1, 1+n_max))
+n=n_max
+values = list(np.arange(1, 1+n))
 values.reverse()
 edges = [list(np.arange(len(values)))]
 random.shuffle(edges[0])
@@ -181,7 +184,8 @@ res = add_case(values, edges)
 
 
 '''case3: '''
-temp_values = list(np.arange(1, int((1+n_max)/2)))
+n=n_max
+temp_values = list(np.arange(1, int((1+n)/2)))
 values = temp_values.copy()
 temp_values.reverse()
 values = values + temp_values
@@ -190,7 +194,8 @@ random.shuffle(edges[0])
 res = add_case(values, edges)
 
 '''case4: '''
-temp_values = list(np.arange(1, int((1+n_max)/2)))
+n=n_max
+temp_values = list(np.arange(1, int((1+n)/2)))
 values = temp_values.copy()
 temp_values.reverse()
 values = temp_values + values
@@ -200,10 +205,72 @@ res = add_case(values, edges)
 
 
 '''case 5:'''
-values = list(np.arange(1, 1+n_max))
+n=n_max
+values = list(np.arange(1, 1+n))
 edges_temp = [list(np.arange(len(values)))]
 random.shuffle(edges_temp[0])
 edges = []
 for edge in edges_temp[0]: 
     edges.append([edge])
 res = add_case(values, edges)
+
+
+'''random cases with n < n_max/2'''
+num_cases = 5
+for caseno in range(num_cases):
+    n = max(5, np.random.randint(int(n_max/2)))
+    values = list(np.arange(1, 1+n))
+    random.shuffle(values)
+
+    num_partitions = max(2, np.random.randint(n-1))
+
+    edges_temp = [list(np.arange(len(values)))]
+    random.shuffle(edges_temp[0])
+    edges = []
+    partitions = list(set(np.random.randint(n-1, size=num_partitions)))
+    partitions.sort()
+
+    '''debugging'''
+
+    '''
+    print('edges:', edges_temp)
+    print('partitions:', partitions)
+    '''
+
+    num_partitions = len(partitions)
+    for i in range(num_partitions-1): 
+        edges = edges + [edges_temp[0][partitions[i] : partitions[i+1]]]
+    edges = edges + [edges_temp[0][partitions[num_partitions-1] : ]]
+
+    res = add_case(values, edges)
+    print(res)
+
+'''random cases with n > n_max/2'''
+num_cases = 5
+for caseno in range(num_cases):
+    n = int(n_max/2) + max(5, np.random.randint(int(n_max/2)))
+    values = list(np.arange(1, 1+n))
+    random.shuffle(values)
+
+    num_partitions = max(2, np.random.randint(n-1))
+
+    edges_temp = [list(np.arange(len(values)))]
+    random.shuffle(edges_temp[0])
+    edges = []
+    partitions = list(set(np.random.randint(n-1, size=num_partitions)))
+    partitions.sort()
+
+    '''debugging'''
+
+    '''
+    print('edges:', edges_temp)
+    print('partitions:', partitions)
+    '''
+
+    num_partitions = len(partitions)
+    for i in range(num_partitions-1): 
+        edges = edges + [edges_temp[0][partitions[i] : partitions[i+1]]]
+    edges = edges + [edges_temp[0][partitions[num_partitions-1] : ]]
+
+    res = add_case(values, edges)
+    print(res)
