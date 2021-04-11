@@ -5,8 +5,15 @@ import random
 
 
 count = 0
-n_max = int(1e1)
-m_max = n_max-1
+n_max = int(1e5)
+val_max = int(1e4)
+
+'''
+    count is to name the file
+    n_max is the maximum number of nodes 
+
+
+'''
 
 def new_case(name):
     name = str(name)
@@ -102,6 +109,7 @@ def add_case(values, edges_list):
     global count
     n = len(values)
     m = 0 
+    values = [min(val_max, value) for value in values]
     for edges in edges_list:
         m += len(edges)-1
     qfile, afile = new_case(count)
@@ -146,14 +154,60 @@ try:
 except:
     '''do nothing'''
 
+
+
+
+Driver code
+
+
+
 '''
-    count is to name the file
-    n_max is the maximum number of nodes and m_max is maximum number of paths
-'''
 
 
 
+'''sample cases'''
 
+'''sample case 1:'''
+values = [1, 5, 3, 9, 4]
+edges = [[0, 1, 2], [3, 4]]
+res = add_case(values, edges)
+
+
+'''sample case 2:'''
+values = [1, 6, 2, 3, 8]
+edges = [[0], [1, 2], [3, 4]]
+res = add_case(values, edges)
+
+
+'''random cases with 5 < n < 10 for debugging'''
+num_cases = 3
+for caseno in range(num_cases):
+    n = 5 + np.random.randint(5)
+    values = list(np.arange(1, 1+n))
+    random.shuffle(values)
+
+    num_partitions = max(2, np.random.randint(n-1))
+
+    edges_temp = [list(np.arange(len(values)))]
+    random.shuffle(edges_temp[0])
+    edges = []
+    partitions = list(set(np.random.randint(n-1, size=num_partitions)))
+    partitions.sort()
+
+    '''debugging'''
+
+    '''
+    print('edges:', edges_temp)
+    print('partitions:', partitions)
+    '''
+
+    num_partitions = len(partitions)
+    for i in range(num_partitions-1): 
+        edges = edges + [edges_temp[0][partitions[i] : partitions[i+1]]]
+    edges = edges + [edges_temp[0][partitions[num_partitions-1] : ]]
+
+    res = add_case(values, edges)
+    print(res)
 
 '''
     Edge cases
@@ -243,7 +297,6 @@ for caseno in range(num_cases):
     edges = edges + [edges_temp[0][partitions[num_partitions-1] : ]]
 
     res = add_case(values, edges)
-    print(res)
 
 '''random cases with n > n_max/2'''
 num_cases = 5
@@ -273,4 +326,3 @@ for caseno in range(num_cases):
     edges = edges + [edges_temp[0][partitions[num_partitions-1] : ]]
 
     res = add_case(values, edges)
-    print(res)
