@@ -1,0 +1,4 @@
+2*N friends attend a party at Barath's restaurant where every table accomodates a pair. It's getting late and 2*x girls (1st years :) ) want to reach their hostel before curfew, but they don't want to miss the day. They come to a conclusion that they will leave in pairs, i.e. each time two girls leave together. There are some strange rules in the restaurant. At any time a table can be fully occupied or empty. The food will be served only if person on the left is vegetarian and the other one is non-vegetarian (This is satisfied initially). Girls seated at ith position should pay 2^i and the boys needn't pay. Is it possible to divide the total into 3 equal parts.  
+
+
+
