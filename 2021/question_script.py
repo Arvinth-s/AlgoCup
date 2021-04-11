@@ -17,8 +17,8 @@ val_max = int(1e4)
 
 def new_case(name):
     name = str(name)
-    question_file = open('./input/ifile{}.txt'.format(name), 'w')
-    answer_file = open('./output/ofile{}.txt'.format(name), 'w')
+    question_file = open('./judgement_day/input/input{}.txt'.format(name), 'w')
+    answer_file = open('./judgement_day/output/output{}.txt'.format(name), 'w')
     return [question_file, answer_file]
 
 
@@ -136,6 +136,10 @@ def add_case(values, edges_list):
     qfile.close()
     afile.close()
     count += 1
+
+    if(res == max(values)):
+        print('res is maximum of values')
+
     return res
 
 
@@ -146,16 +150,21 @@ def add_case(values, edges_list):
     If directory doesn't exist create one. If it exists os.mkdir returns error. Ignore it
 '''
 try:
-    os.mkdir('./input')
+    os.mkdir('./judgement_day')
+except:
+    '''do nothing'''
+
+try:
+    os.mkdir('./judgement_day/input')
 except:
     '''do nothing'''
 try:
-    os.mkdir('./output')
+    os.mkdir('./judgement_day/output')
 except:
     '''do nothing'''
 
 
-
+'''
 
 Driver code
 
