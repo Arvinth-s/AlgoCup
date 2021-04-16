@@ -1,6 +1,14 @@
-2021/judgement_day/input/*
-2021/judgement_day/output/*
-2021/judgement_day.zip
-2021/uploaded/*
+# 2021/judgement_day/input/*
+# 2021/judgement_day/output/*
+# 2021/judgement_day.zip
+# 2021/uploaded/*
+# !2021/uploaded/*.zip
+# /2021/solution.exe
+# /2021/testing/*
+
+/2021/*
+!2021/*.cpp
+!2021/*.py
 !2021/uploaded/*.zip
-/2021/solution.exe
+!2021/.vscode/*
+!2021/*.md

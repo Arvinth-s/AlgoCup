@@ -5,8 +5,10 @@ import random
 
 
 count = 0
-n_max = int(1e5)
+n_max = int(1e4)
 val_max = int(1e4)
+mode = "debugging"
+# mode = "uploaded"
 
 '''
     count is to name the file
@@ -17,16 +19,18 @@ val_max = int(1e4)
 
 def new_case(name):
     name = str(name)
-    question_file = open('./judgement_day/input/input{}.txt'.format(name), 'w')
-    answer_file = open('./judgement_day/output/output{}.txt'.format(name), 'w')
-    return [question_file, answer_file]
+    question_file = open('./' + mode + '/input/input{}.txt'.format(name), 'w')
+    answer_file = open('./' + mode + '/output/output{}.txt'.format(name), 'w')
+    log_file = open('./' + mode + '/log/log{}.txt'.format(name), 'w')
+    return [question_file, answer_file, log_file]
 
 
 '''
     code from gfg
 '''
-def max_area_histogram(histogram):
+def max_area_histogram(histogram, log_file):
 
+    # log_file.write(str(histogram)+'\n')
     # This function calulates maximum 
     # rectangular area under given 
     # histogram with n bars
@@ -96,12 +100,18 @@ def max_area_histogram(histogram):
     return max_area
 
 
-def convert_to_histogram(values, edges_list):
+def convert_to_histogram(values, edges_list, log_file):
     res = 0
     for edges in edges_list:
-        hist = values[:len(edges)]
-        values = values[len(edges):]
-        res = max(res, max_area_histogram(hist))
+        hist = [values[i] for i in edges]
+        # values = values[len(edges):]
+        buffer = max_area_histogram(hist, log_file)
+        if(buffer > res):
+            res = buffer
+        # print(values)
+            # log_file.truncate(0)
+            # for i in hist:
+                # log_file.write(str(i) + " ")
     return res
 
 
@@ -112,7 +122,8 @@ def add_case(values, edges_list):
     values = [min(val_max, value) for value in values]
     for edges in edges_list:
         m += len(edges)-1
-    qfile, afile = new_case(count)
+    qfile, afile, log_file = new_case(count)
+    # log_file.write(str(edges_list) + '\n')
     qfile.write('{} {}\n'.format(n, m))
     for value in values:
         qfile.write(str(value) + " ")
@@ -123,18 +134,27 @@ def add_case(values, edges_list):
     qfile.write('\n')
 
 
-    res = convert_to_histogram(values, edges_list)
+    res = convert_to_histogram(values, edges_list, log_file)
     assert(res < int(1e9))
     sign = 2*np.random.randint(2)-1
-    noise = np.random.randint(int(res/2))
+    noise = min(int(1e9)-res,  np.random.randint(int(res/2)))
     qfile.write(str(noise*sign+res))
     assert(sign==1 or sign==-1)
+
+    '''
     if(sign < 0 or noise == 0):
         afile.write('Heaven')
     else:
         afile.write('Hell')
+    '''
+
+    #for debugging
+    afile.write(str(res))
+
+
     qfile.close()
     afile.close()
+    log_file.close()
     count += 1
 
     if(res == max(values)):
@@ -144,27 +164,33 @@ def add_case(values, edges_list):
 
 
     
-    
 
 '''
     If directory doesn't exist create one. If it exists os.mkdir returns error. Ignore it
 '''
 try:
-    os.mkdir('./judgement_day')
+    os.mkdir('./'+mode)
 except:
     '''do nothing'''
 
 try:
-    os.mkdir('./judgement_day/input')
+    os.mkdir('./' + mode +  '/input')
 except:
     '''do nothing'''
 try:
-    os.mkdir('./judgement_day/output')
+    os.mkdir('./'+ mode +'/output')
 except:
     '''do nothing'''
-
+try:
+    os.mkdir('./'+ mode +'/log')
+except:
+    '''do nothing'''
 
 '''
+
+
+
+
 
 Driver code
 
@@ -189,7 +215,7 @@ res = add_case(values, edges)
 
 
 '''random cases with 5 < n < 10 for debugging'''
-num_cases = 3
+num_cases = 10
 for caseno in range(num_cases):
     n = 5 + np.random.randint(5)
     values = list(np.arange(1, 1+n))
@@ -199,9 +225,12 @@ for caseno in range(num_cases):
 
     edges_temp = [list(np.arange(len(values)))]
     random.shuffle(edges_temp[0])
-    edges = []
     partitions = list(set(np.random.randint(n-1, size=num_partitions)))
     partitions.sort()
+    edges = []
+
+    if(partitions[0] > 0):
+        edges = [edges_temp[0][:partitions[0]]]
 
     '''debugging'''
 
@@ -279,7 +308,7 @@ res = add_case(values, edges)
 
 
 '''random cases with n < n_max/2'''
-num_cases = 5
+num_cases = 20
 for caseno in range(num_cases):
     n = max(5, np.random.randint(int(n_max/2)))
     values = list(np.arange(1, 1+n))
@@ -308,7 +337,7 @@ for caseno in range(num_cases):
     res = add_case(values, edges)
 
 '''random cases with n > n_max/2'''
-num_cases = 5
+num_cases = 20
 for caseno in range(num_cases):
     n = int(n_max/2) + max(5, np.random.randint(int(n_max/2)))
     values = list(np.arange(1, 1+n))
