@@ -5,9 +5,9 @@ import random
 
 
 count = 0
-n_max = int(1e4)
+n_max = int(1e5)
 val_max = int(1e4)
-mode = "debugging"
+mode = "judgement_day"
 # mode = "uploaded"
 
 '''
@@ -136,10 +136,10 @@ def add_case(values, edges_list):
 
     res = convert_to_histogram(values, edges_list, log_file)
     assert(res < int(1e9))
-    sign = 2*np.random.randint(2)-1
-    noise = min(int(1e9)-res,  np.random.randint(int(res/2)))
-    qfile.write(str(noise*sign+res))
-    assert(sign==1 or sign==-1)
+    # sign = 2*np.random.randint(2)-1
+    # noise = min(int(1e9)-res,  np.random.randint(int(res/2)))
+    # qfile.write(str(noise*sign+res))
+    # assert(sign==1 or sign==-1)
 
     '''
     if(sign < 0 or noise == 0):
@@ -215,7 +215,7 @@ res = add_case(values, edges)
 
 
 '''random cases with 5 < n < 10 for debugging'''
-num_cases = 10
+num_cases = 5
 for caseno in range(num_cases):
     n = 5 + np.random.randint(5)
     values = list(np.arange(1, 1+n))
@@ -308,7 +308,7 @@ res = add_case(values, edges)
 
 
 '''random cases with n < n_max/2'''
-num_cases = 20
+num_cases = 5
 for caseno in range(num_cases):
     n = max(5, np.random.randint(int(n_max/2)))
     values = list(np.arange(1, 1+n))
@@ -337,7 +337,7 @@ for caseno in range(num_cases):
     res = add_case(values, edges)
 
 '''random cases with n > n_max/2'''
-num_cases = 20
+num_cases = 5
 for caseno in range(num_cases):
     n = int(n_max/2) + max(5, np.random.randint(int(n_max/2)))
     values = list(np.arange(1, 1+n))

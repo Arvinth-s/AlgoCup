@@ -77,12 +77,12 @@ void writeList(ofstream lfile, vector<long long> hist){
 
 int main(){
     ifstream qfile, ifile;
-    string mode = "debugging";
+    string mode = "judgement_day";
     string iname = "./" +mode+ "/input/input";
     string oname = "./" +mode+ "/output/output";
     string lname = "./" +mode+ "/log/log";
     long long t = -1;
-    while(++t<56){
+    while(++t<22){
         string ifile_name = iname + to_string(t) + ".txt";
         string ofile_name = oname + to_string(t) + ".txt";
         string lfile_name = lname + to_string(t) + ".txt";
